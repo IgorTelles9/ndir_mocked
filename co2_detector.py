@@ -25,12 +25,11 @@ class CO2Detector:
         print(f" Inicializando AirQuality Monitor - Device ID: {self.device_id}")
         print("=========================================================")
         self.network.connect()
-        time.sleep(1) # Aguarda handshake MQTT
+        time.sleep(1)
         self._run_main_loop()
 
     def _run_main_loop(self):
         print(f"[SISTEMA] Iniciando monitoramento. Transmitindo a cada {self.read_interval_seconds}s...")
-        print(f"[SISTEMA] Tópico alvo: {self.topic}\n")
         
         try:
             while True:
@@ -38,12 +37,11 @@ class CO2Detector:
                     print("[SISTEMA] Bateria esgotada. Desligando...")
                     break
 
-                # 1. Coleta dados físicos
+                # Coleta dados físicos
                 current_co2 = self.co2_sensor.read_ppm()
                 current_battery = self.battery.consume()
 
-                # 2. Monta o pacote de telemetria
-                # Mantemos a chave "value" para compatibilidade com as Strategies do Gateway
+                # Monta o pacote de telemetria
                 payload = {
                     "dispositivo_id": self.device_id,
                     "titular_id": self.titular_id,
@@ -55,7 +53,7 @@ class CO2Detector:
                     "timestamp": int(time.time())
                 }
 
-                # 3. Transmite
+                # Transmite
                 json_sent = self.network.publish(self.topic, payload)
                 
                 # Log de tela

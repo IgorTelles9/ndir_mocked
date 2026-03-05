@@ -3,8 +3,6 @@ import random
 class CO2Sensor:
     """
     Simula um sensor de Dióxido de Carbono (NDIR).
-    Usa um modelo de random walk para gerar leituras de PPM 
-    que flutuam suavemente.
     """
     def __init__(self, base_ppm: float = 600.0):
         # 400 ppm é o ar livre. 600-800 é um ambiente interno normal.
